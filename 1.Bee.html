@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="bstyles.css">
+</head>
+<body>
+    <header>
+        <h1>BEE</h1>
+        <nav>
+            <ul>
+                
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="product-list">
+            <div class="product" onclick="openProductPopup('product1')">
+                <img src="p1.jpeg" alt="Product 1">
+                <h2>PURE HONEY - GOLDEN</h2>
+                <p class="description">This is a great product.</p>
+                <p class="price">$10.00</p>
+            </div>
+            <div class="product" onclick="openProductPopup('product2')">
+                <img src="p2.jpeg" alt="Product 2">
+                <h2>PURE HONEY - DARK</h2>
+                <p class="description">This is another great product.</p>
+                <p class="price">$20.00</p>
+            </div>
+            <div class="product" onclick="openProductPopup('product3')">
+                <img src="p3.jpeg" alt="Product 3">
+                <h2>PURE HONEY - LIGHT</h2>
+                <p class="description">This product is also great.</p>
+                <p class="price">$30.00</p>
+            </div>
+            <div class="product" onclick="openProductPopup('product4')">
+                <img src="p4.jpeg" alt="Product 4">
+                <h2>SUPER HONEY</h2>
+                <p class="description">This is a great product.</p>
+                <p class="price">$40.00</p>
+            </div>
+            <div class="product" onclick="openProductPopup('product5')">
+                <img src="p5.jpeg" alt="Product 5">
+                <h2>RAW HONEY</h2>
+                <p class="description">This is another great product.</p>
+                <p class="price">$50.00</p>
+            </div>
+            <div class="product" onclick="openProductPopup('product6')">
+                <img src="p6.jpeg" alt="Product 6">
+                <h2>TONGKAT ALI HONEY</h2>
+                <p class="description">This product is also great.</p>
+                <p class="price">$60.00</p>
+            </div>
+            <div class="product" onclick="openProductPopup('product7')">
+                <img src="p7.jpeg" alt="Product 7">
+                <h2>4 IN 1 HONEY</h2>
+                <p class="description">This is a great product.</p>
+                <p class="price">$70.00</p>
+            </div>
+            <div class="product" onclick="openProductPopup('product8')">
+                <img src="p10.png" alt="Product 8">
+                <h2>CREAM GINGER HONEY</h2>
+                <p class="description">This is another great product.</p>
+                <p class="price">$80.00</p>
+            </div>
+            <div class="product" onclick="openProductPopup('product9')">
+                <img src="p9.jpeg" alt="Product 9">
+                <h2>DD HONEY</h2>
+                <p class="description">This product is also great.</p>
+                <p class="price">$90.00</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Shop Name. All rights reserved.</p>
+    </footer>
+
+    <!-- Popup Modal -->
+    <div id="productPopup" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProductPopup()">&times;</span>
+            <div id="productDetails"></div>
+        </div>
+    </div>
+
+    <script src="bscripst.js"></script>
+</body>
+</html>
+
