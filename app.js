@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const multer = require('multer');
 const db = require('./db');
 const app = express();
 
@@ -13,6 +14,10 @@ app.use(cors());
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Define a route to test the database connection
 app.get('/time', async (req, res) => {
@@ -66,27 +71,24 @@ app.post('/login', async (req, res) => {
 
 //product________________________________
 
-// Middleware to parse JSON bodies
-app.use(express.json());
-
-// Use CORS
-app.use(cors());
-
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Define route to add a new product
-app.post('/add-product', async (req, res) => {
+app.post('/add-product', upload.single('productImage'), async (req, res) => {
     try {
         const { productType, productName, productQuantity, productPrice } = req.body;
+        const productImage = req.file.buffer;
+
         // Insert the product data into the database
-        const result = await db.query('INSERT INTO product (producttype, productname, productquantity, productprice) VALUES ($1, $2, $3, $4) RETURNING *', [productType, productName, productQuantity, productPrice]);
+        const result = await db.query(
+            'INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [productType, productName, productQuantity, productPrice, productImage]
+        );
         res.json(result.rows[0]);
     } catch (err) {
         console.error('Error adding product:', err);
         res.status(500).send('Error adding product');
     }
 });
+
 
 // Other routes and server setup...
 
