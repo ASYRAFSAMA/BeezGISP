@@ -1,16 +1,9 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const { Pool } = require('pg');
-const app = express();
+const db = require('./db');
 
-// Use DATABASE_URL from environment variables for Heroku
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    },
-});
+const app = express();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
