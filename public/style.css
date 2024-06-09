@@ -86,7 +86,7 @@ header {
 }
 
 .wrapper {
-    position: relative;
+    position: fixed;
     width: 400px;
     height: 440px;
     background: transparent;
@@ -263,4 +263,20 @@ header {
 
 .login-register p a:hover {
     text-decoration: underline;
+}
+
+.image-container {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.image {
+    float: right;
+    margin-left: 800px;
+    width: 480px; 
+    height: auto;
+    border-radius: 10px; 
+    box-shadow: 0 0 70px rgba(0, 0, 0, 800); 
 }

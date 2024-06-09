@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Products</title>
+    <link rel="stylesheet" href="product.css">
+</head>
+<body>
+    <header>
+        <h2 class="logo">MBG</h2>
+        <nav class="navigation">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="product.html">Product</a>
+            <a href="#">staff</a>
+            <button class="btnLogin-popup">Login</button>
+        </nav>        
+        </header>
+
+    <div class="container">
+        <h1>PRODUCTS</h1>
+        <div class="add-product-form">
+            <h2>ADD PRODUCT</h2>
+            <form id="productForm">
+                <input type="text" id="productName" placeholder="Enter product name">
+                <input type="text" id="productPrice" placeholder="Enter product price">
+                <input type="file" id="productImage">
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+        <div class="products">
+            <div class="product">
+                <img src="path/to/image1.jpg" alt="The World of Abstract Art">
+                <h3>the world of art</h3>
+                <p>$50/-</p>
+                <button class="update-btn">Update</button>
+                <button class="delete-btn">Delete</button>
+            </div>
+            <div class="product">
+                <img src="path/to/image2.jpg" alt="The Happy Lemon">
+                <h3>happy lemons</h3>
+                <p>$20/-</p>
+                <button class="update-btn">Update</button>
+                <button class="delete-btn">Delete</button>
+            </div>
+            <div class="product">
+                <img src="path/to/image3.jpg" alt="Darknet">
+                <h3>darknet</h3>
+                <p>$16/-</p>
+                <button class="update-btn">Update</button>
+                <button class="delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+    <script src="product.js"></script>
+</body>
+</html>
