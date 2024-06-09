@@ -3,6 +3,9 @@ const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
 const db = require('./db');
+const dotenv = require('dotenv');
+
+dotenv.config();
 const app = express();
 
 // Middleware to parse JSON bodies and form data
