@@ -1,12 +1,20 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const db = require('./db');
-
+const { Pool } = require('pg');
 const app = express();
+
+// Use DATABASE_URL from environment variables for Heroku
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false,
+    },
+});
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Use CORS
 app.use(cors());
@@ -14,23 +22,25 @@ app.use(cors());
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Route to handle user registration
+// Route to handle customer registration
 app.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { customername, customeremail, customerpassword, customerdob, customerphonenum, customeraddress } = req.body;
     try {
-        // Assuming you have a table named 'users' with columns 'username', 'email', 'password'
-        const result = await db.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *', [username, email, password]);
+        const result = await pool.query(
+            'INSERT INTO customer (customername, customeremail, customerpassword, customerdob, customerphonenum, customeraddress) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [customername, customeremail, customerpassword, customerdob, customerphonenum, customeraddress]
+        );
         res.json(result.rows[0]);
     } catch (err) {
         console.error('Error in /register route:', err);
-        res.status(500).send('Failed to register user.');
+        res.status(500).send('Failed to register customer.');
     }
 });
 
 // Define a route to test the database connection
 app.get('/time', async (req, res) => {
     try {
-        const result = await db.query('SELECT NOW()');
+        const result = await pool.query('SELECT NOW()');
         res.json(result.rows[0]);
     } catch (err) {
         console.error('Error in /time route:', err);
