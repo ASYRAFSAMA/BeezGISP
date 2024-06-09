@@ -97,6 +97,7 @@ header {
     overflow: hidden;
     transform: scale(0);
     transition: transform .5s ease, height .2s ease;
+    overflow-y: auto; /* Make the wrapper scrollable */
 }
 
 .wrapper.active-popup {
@@ -104,8 +105,10 @@ header {
 }
 
 .wrapper.active {
-    height: 620px;
+    height: 700px; /* Increased height for the registration form */
+    overflow-y: auto; /* Ensure scrolling for the active state */
 }
+
 
 .wrapper .form-box {
     width: 100%;
