@@ -1,9 +1,17 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const db = require('./db');
+const { Pool } = require('pg');
 
 const app = express();
+
+// Database connection setup
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -25,7 +33,7 @@ app.post('/register', async (req, res) => {
         );
         res.json(result.rows[0]);
     } catch (err) {
-        console.error('Error in /register route:', err);
+        console.error('Error in /register route:', err.message, err.stack);
         res.status(500).send('Failed to register customer.');
     }
 });
@@ -36,7 +44,7 @@ app.get('/time', async (req, res) => {
         const result = await pool.query('SELECT NOW()');
         res.json(result.rows[0]);
     } catch (err) {
-        console.error('Error in /time route:', err);
+        console.error('Error in /time route:', err.message, err.stack);
         res.status(500).send('Something went wrong!');
     }
 });
