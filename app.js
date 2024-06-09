@@ -92,6 +92,16 @@ app.post('/add-product', upload.single('productImage'), async (req, res) => {
     }
 });
 
+// Define route to get all products
+app.get('/products', async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM product');
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Error fetching products:', err);
+        res.status(500).send('Error fetching products');
+    }
+});
 
 // Other routes and server setup...
 
