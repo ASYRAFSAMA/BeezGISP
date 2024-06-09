@@ -107,6 +107,19 @@ app.get('/products', async (req, res) => {
     }
 });
 
+// Define route to delete products
+app.delete('/delete-product/:id', async (req, res) => {
+    const productId = req.params.id;
+
+    try {
+        await db.query('DELETE FROM product WHERE productid = $1', [productId]);
+        res.status(200).send('Product deleted successfully');
+    } catch (err) {
+        console.error('Error deleting product:', err);
+        res.status(500).send('Error deleting product');
+    }
+});
+
 // Other routes and server setup...
 
 const PORT = process.env.PORT || 4000;

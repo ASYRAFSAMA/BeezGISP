@@ -63,3 +63,30 @@ async function fetchProducts() {
 }
 
 document.addEventListener('DOMContentLoaded', fetchProducts);
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.delete-btn').forEach(button => {
+      button.addEventListener('click', async (event) => {
+          const productId = event.target.closest('.product').dataset.id;
+
+          const confirmed = confirm(`Are you sure you want to delete product ID ${productId}?`);
+          if (!confirmed) return;
+
+          try {
+              const response = await fetch(`/delete-product/${productId}`, {
+                  method: 'DELETE',
+              });
+
+              if (response.ok) {
+                  event.target.closest('.product').remove();
+                  alert('Product deleted successfully!');
+              } else {
+                  alert('Failed to delete product.');
+              }
+          } catch (error) {
+              console.error('Error deleting product:', error);
+              alert('Error deleting product.');
+          }
+      });
+  });
+});
