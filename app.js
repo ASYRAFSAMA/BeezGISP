@@ -96,7 +96,11 @@ app.post('/add-product', upload.single('productImage'), async (req, res) => {
 app.get('/products', async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM product');
-        res.json(result.rows);
+        const products = result.rows.map(product => ({
+            ...product,
+            productimage: product.productimage ? product.productimage.toString('base64') : null
+        }));
+        res.json(products);
     } catch (err) {
         console.error('Error fetching products:', err);
         res.status(500).send('Error fetching products');

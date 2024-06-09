@@ -1,3 +1,5 @@
+// product.js
+
 document.getElementById('productForm').addEventListener('submit', async function(event) {
   event.preventDefault();
   const formData = new FormData(this);
@@ -9,7 +11,6 @@ document.getElementById('productForm').addEventListener('submit', async function
       if (response.ok) {
           const data = await response.json();
           alert('Product added successfully!');
-          // Optionally, you can refresh the product list or update the UI after adding the product
           fetchProducts();
       } else {
           console.error('Failed to add product');
@@ -28,10 +29,28 @@ async function fetchProducts() {
           const products = await response.json();
           const productList = document.getElementById('productList');
           productList.innerHTML = '';
+
           products.forEach(product => {
-              const listItem = document.createElement('li');
-              listItem.textContent = `${product.productname} - ${product.producttype} - ${product.productquantity} - $${product.productprice}`;
-              productList.appendChild(listItem);
+              const productDiv = document.createElement('div');
+              productDiv.className = 'product';
+              productDiv.dataset.id = product.productid;
+              productDiv.dataset.name = product.productname;
+              productDiv.dataset.price = product.productprice;
+              productDiv.dataset.quantity = product.productquantity;
+              productDiv.dataset.type = product.producttype;
+              productDiv.dataset.img = product.productimage ? `data:image/jpeg;base64,${product.productimage}` : 'default.jpg';
+
+              productDiv.innerHTML = `
+                  <img src="${productDiv.dataset.img}" alt="${product.productname}">
+                  <h3>${product.productname}</h3>
+                  <p class="pid">Product ID: ${product.productid}</p>
+                  <p class="price">RM ${product.productprice}</p>
+                  <p class="quantity">Quantity available: ${product.productquantity}</p>
+                  <p class="product-type">Product Type: ${product.producttype}</p>
+                  <button class="update-btn">Update</button>
+                  <button class="delete-btn">Delete</button>
+              `;
+              productList.appendChild(productDiv);
           });
       } else {
           console.error('Failed to fetch products');
@@ -43,5 +62,4 @@ async function fetchProducts() {
   }
 }
 
-// Fetch and display products when the page loads
 document.addEventListener('DOMContentLoaded', fetchProducts);
