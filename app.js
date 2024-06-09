@@ -62,8 +62,35 @@ app.post('/login', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 4000;
 
+
+//product________________________________
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Use CORS
+app.use(cors());
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Define route to add a new product
+app.post('/add-product', async (req, res) => {
+    try {
+        const { productType, productName, productQuantity, productPrice } = req.body;
+        // Insert the product data into the database
+        const result = await db.query('INSERT INTO product (producttype, productname, productquantity, productprice) VALUES ($1, $2, $3, $4) RETURNING *', [productType, productName, productQuantity, productPrice]);
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error('Error adding product:', err);
+        res.status(500).send('Error adding product');
+    }
+});
+
+// Other routes and server setup...
+
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

@@ -106,6 +106,58 @@ h1 {
     margin-bottom: 20px;
 }
 
+.input-container {
+    margin: 20px auto;
+    width: 329px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-size: 0.9em;
+    color: #333;
+}
+
+select {
+    padding: 5px;
+    font-size: 0.9em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+
+.form-group {
+    width: 300px;
+    margin: 20px auto;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  #availability-message {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  #availability-message.available {
+    color: green;
+  }
+  
+  #availability-message.unavailable {
+    color: red;
+  }
+  
 .add-product-form input {
     display: block;
     width: 80%;
@@ -142,6 +194,18 @@ h1 {
     width: 250px;
     margin: 10px;
     text-align: center;
+}
+
+.product .quantity {
+    font-size: 0.9em;
+    color: #666;
+    margin: 5px 0;
+}
+
+.product .product-type {
+    font-size: 0.9em;
+    color: #666;
+    margin: 5px 0;
 }
 
 .product img {
