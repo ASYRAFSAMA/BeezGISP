@@ -104,7 +104,9 @@ header {
 }
 
 .wrapper.active {
-    height: 620px;
+    
+    height: 700px; /* Increased height for the registration form */
+    overflow-y: auto; /* Ensure scrolling for the active state */
 }
 
 .wrapper .form-box {
