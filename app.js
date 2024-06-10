@@ -4,13 +4,14 @@ const cors = require('cors');
 const multer = require('multer');
 const db = require('./db');
 const dotenv = require('dotenv');
+const fs = require('fs');
 const { Pool } = require('pg');
 
 
 dotenv.config();
 const app = express();
-const port = process.env.PORT || 3000; // Define port here
-//const port = 3000;
+const port = process.env.PORT || 3000;
+
 
 // Middleware to parse JSON bodies and form data
 app.use(express.json());
@@ -130,18 +131,18 @@ app.post('/add-product', upload.single('productImage'), async (req, res) => {
 app.get('/product/:id', async (req, res) => {
     const { id } = req.params;
     try {
-      const result = await db.query('SELECT * FROM product WHERE productid = $1', [id]);
-      if (result.rows.length === 0) {
-        return res.status(404).send('Product not found');
-      }
-      const product = result.rows[0];
-      product.productimage = product.productimage ? product.productimage.toString('base64') : null;
-      res.json(product);
+        const result = await db.query('SELECT * FROM product WHERE productid = $1', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).send('Product not found');
+        }
+        const product = result.rows[0];
+        product.productimage = product.productimage ? product.productimage.toString('base64') : null;
+        res.json(product);
     } catch (err) {
-      console.error('Error fetching product:', err);
-      res.status(500).send('Error fetching product');
+        console.error('Error fetching product:', err);
+        res.status(500).send('Error fetching product');
     }
-  });
+});
 
 // Define route to delete products
 /*app.delete('/delete-product/:id', async (req, res) => {
@@ -158,19 +159,14 @@ app.get('/product/:id', async (req, res) => {
 // Delete product route
 app.delete('/delete-product/:id', async (req, res) => {
     const { id } = req.params;
-  
     try {
-      await db.query('DELETE FROM product WHERE productid = $1', [id]);
-      res.json({ message: 'Product deleted successfully' });
+        await db.query('DELETE FROM product WHERE productid = $1', [id]);
+        res.json({ message: 'Product deleted successfully' });
     } catch (err) {
-      console.error('Error deleting product:', err);
-      res.status(500).send('Error deleting product');
+        console.error('Error deleting product:', err);
+        res.status(500).send('Error deleting product');
     }
-  });
-  
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
+});
 
 // Define route to update products
 /*app.put('/update-product/:id', async (req, res) => {
@@ -192,18 +188,18 @@ app.delete('/delete-product/:id', async (req, res) => {
 app.put('/update-product/:id', async (req, res) => {
     const { id } = req.params;
     const { productName, productQuantity, productPrice } = req.body;
-  
+
     try {
-      await db.query(
-        'UPDATE product SET productname = $1, productquantity = $2, productprice = $3 WHERE productid = $4',
-        [productName, productQuantity, productPrice, id]
-      );
-      res.json({ message: 'Product updated successfully' });
+        await db.query(
+            'UPDATE product SET productname = $1, productquantity = $2, productprice = $3 WHERE productid = $4',
+            [productName, productQuantity, productPrice, id]
+        );
+        res.json({ message: 'Product updated successfully' });
     } catch (err) {
-      console.error('Error updating product:', err);
-      res.status(500).send('Error updating product');
+        console.error('Error updating product:', err);
+        res.status(500).send('Error updating product');
     }
-  });
+});
 
 //Add an endpoint in your Express app to fetch product details by ID.
 app.get('/api/products/:id', async (req, res) => {
@@ -273,7 +269,6 @@ app.get('/products', async (req, res) => {
 
 // Other routes and server setup...
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
