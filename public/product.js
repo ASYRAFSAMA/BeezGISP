@@ -11,8 +11,9 @@ document.getElementById('productForm').addEventListener('submit', async function
             alert('Product added successfully!');
             // Optionally, you can redirect or update the UI after adding the product
         } else {
-            console.error('Failed to add product');
-            alert('Failed to add product');
+            const errorText = await response.text();
+            console.error('Failed to add product:', errorText);
+            alert('Failed to add product: ' + errorText);
         }
     } catch (error) {
         console.error('Error adding product:', error);

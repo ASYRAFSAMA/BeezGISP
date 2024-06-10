@@ -2,14 +2,12 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const db = require('./db');
-const app = express();
 const multer = require('multer');
-
-
 const dotenv = require('dotenv');
 
 dotenv.config();
 
+const app = express();
 
 // Middleware to parse JSON bodies and form data
 app.use(express.json());
@@ -78,6 +76,9 @@ app.post('/add-product', upload.single('productImage'), async (req, res) => {
   try {
       const { productType, productName, productQuantity, productPrice } = req.body;
       const productImage = req.file.buffer;
+
+      console.log('Received data:', { productType, productName, productQuantity, productPrice });
+      console.log('Received image:', req.file);
 
       // Insert the product data into the database
       const result = await db.query(

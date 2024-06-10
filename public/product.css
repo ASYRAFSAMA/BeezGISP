@@ -13,11 +13,10 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: rgb(219, 194, 50);
-
 }
 
 header {
-    position: absolute ;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -26,7 +25,6 @@ header {
     justify-content: space-between;
     align-items: center;
     z-index: 99;
-
 }
 
 .logo {
@@ -41,7 +39,7 @@ header {
     color: rgb(0, 0, 0);
     text-decoration: none;
     font-weight: 800;
-    margin-left:  40px; 
+    margin-left: 40px; 
 }
 
 .navigation a::after {
@@ -59,10 +57,9 @@ header {
 }
 
 .navigation a:hover::after {
-    transform-origin:left ;
+    transform-origin: left;
     transform: scaleX(1);
 }
-
 
 .navigation .btnLogin-popup {
     width: 130px;
@@ -82,7 +79,6 @@ header {
     background: white;
     color: #162938;
 }
-
 
 .container {
     padding-top: 80px;
@@ -132,32 +128,31 @@ select {
     outline: none;
 }
 
-
 .form-group {
     width: 300px;
     margin: 20px auto;
-  }
-  
-  input[type="text"] {
+}
+
+input[type="text"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
-  
-  #availability-message {
+}
+
+#availability-message {
     margin-top: 10px;
     font-size: 14px;
-  }
-  
-  #availability-message.available {
+}
+
+#availability-message.available {
     color: green;
-  }
-  
-  #availability-message.unavailable {
+}
+
+#availability-message.unavailable {
     color: red;
-  }
-  
+}
+
 .add-product-form input {
     display: block;
     width: 80%;
