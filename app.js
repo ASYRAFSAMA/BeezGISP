@@ -120,7 +120,8 @@ app.delete('/delete-product/:id', async (req, res) => {
     }
 });
 
-// Define route to delete products
+
+// Define route to update products
 app.put('/update-product/:id', async (req, res) => {
     const productId = req.params.id;
     const { productName, productQuantity, productPrice } = req.body;
@@ -136,6 +137,7 @@ app.put('/update-product/:id', async (req, res) => {
         res.status(500).send('Error updating product');
     }
 });
+
 
 // Other routes and server setup...
 
