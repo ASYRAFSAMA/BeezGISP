@@ -227,7 +227,7 @@ app.get('/api/products/:id', async (req, res) => {
 
 
 //Add an endpoint in your Express app to handle the product update.
-app.put('/api/products/:id', upload.single('productImage'), async (req, res) => {
+/*app.put('/api/products/:id', upload.single('productImage'), async (req, res) => {
     const { id } = req.params;
     const { productName, productQuantity, productPrice, productType } = req.body;
     let productImage = null;
@@ -245,7 +245,7 @@ app.put('/api/products/:id', upload.single('productImage'), async (req, res) => 
         console.error(err);
         res.status(500).send('Server error');
     }
-});
+});*/
 
 //Fetch All Products
 app.get('/products', async (req, res) => {
