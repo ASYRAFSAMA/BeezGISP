@@ -5,6 +5,7 @@ const cors = require('cors');
 const multer = require('multer');
 const db = require('./db');
 const dotenv = require('dotenv');
+const { Pool } = require('pg');
 
 dotenv.config();
 const app = express();
