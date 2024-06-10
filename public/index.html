@@ -13,32 +13,39 @@
             <a href="index.html">Home</a>
             <a href="#">About</a>
             <a href="product.html">Product</a>
-            <a href="#">staff</a>
+            <a href="#">Staff</a>
             <button class="btnLogin-popup">Login</button>
-        </nav>
+        </nav>        
     </header>
 
     <div class="container">
         <h1>PRODUCTS</h1>
         <div class="add-product-form">
             <h2>CREATE PRODUCT</h2>
-            <form id="productForm" action="/add-product" method="POST" enctype="multipart/form-data">
-                <div class="input-container">
-                    <label for="productType">Product Type:</label>
-                    <select id="productType" name="productType">
-                        <option value="honey">Honey</option>
-                        <option value="soap">Soap</option>
-                        <option value="souvenir">Souvenir</option>
-                    </select>
-                </div>
-                <input type="text" id="productName" name="productName" placeholder="Enter product name" required>
-                <input type="number" id="productQuantity" name="productQuantity" placeholder="Enter product quantity" required>
-                <input type="number" id="productPrice" name="productPrice" placeholder="Enter product price" required>
-                <input type="file" id="productImage" name="productImage" required>
+            <div class="form-group">
+                <input type="text" id="product-id" placeholder="Enter product ID">
+                <p id="availability-message"></p>
+            </div>
+            <div class="input-container">
+                <label for="productType">Product Type:</label>
+                <select id="productType">
+                    <option value="honey">Honey</option>
+                    <option value="soap">Soap</option>
+                    <option value="souvenir">Souvenir</option>
+                </select>
+            </div>
+            <form id="productForm" enctype="multipart/form-data">
+                <input type="text" id="productQuantity" placeholder="Enter product quantity">
+                <input type="text" id="productName" placeholder="Enter product name">
+                <input type="text" id="productPrice" placeholder="Enter product price">
+                <input type="file" id="productImage" name="productImage">
                 <button type="submit">Create Product</button>
             </form>
         </div>
+        <div class="products">
+            <!-- Existing products will be rendered here -->
+        </div>
     </div>
-    <script src="product.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>

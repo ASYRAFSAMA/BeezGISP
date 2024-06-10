@@ -1,52 +1,58 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors');
 const multer = require('multer');
 const db = require('./db');
 
 const app = express();
-const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies and form data
+// Middleware to parse JSON bodies
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+// Use CORS
+app.use(cors());
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Multer setup for handling file uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    },
-});
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Route to add a new product
-app.post('/add-product', upload.single('productImage'), async (req, res) => {
-    const { productType, productName, productQuantity, productPrice } = req.body;
-    const productImage = req.file ? req.file.filename : null;
-
-    if (!productType || !productName || !productQuantity || !productPrice || !productImage) {
-        return res.status(400).json({ message: 'All fields are required' });
-    }
-
-    try {
-        const result = await db.query(
-            'INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [productType, productName, productQuantity, productPrice, productImage]
-        );
-        res.status(201).json({ message: 'Product added successfully', product: result.rows[0] });
-    } catch (error) {
-        console.error('Error adding product:', error);
-        res.status(500).json({ message: 'Failed to add product' });
-    }
+// Define a route to test the database connection
+app.get('/time', async (req, res) => {
+  try {
+    const result = await db.query('SELECT NOW()');
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error in /time route:', err);
+    res.status(500).send('Something went wrong!');
+  }
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+// Route to create a new product
+app.post('/products', upload.single('productImage'), async (req, res) => {
+  const { productType, productName, productQuantity, productPrice } = req.body;
+  const productImage = req.file ? req.file.buffer : null;
+
+  try {
+    const query = `
+      INSERT INTO product (producttype, productname, productquantity, productprice, productimage)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *;
+    `;
+    const values = [productType, productName, parseInt(productQuantity, 10), parseFloat(productPrice), productImage];
+    
+    const result = await db.query(query, values);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error in /products route:', err);
+    res.status(500).send('Something went wrong!');
+  }
+});
+
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
