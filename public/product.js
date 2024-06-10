@@ -163,3 +163,13 @@ async function loadProducts() {
       console.error('Error loading products:', error);
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.update-btn').forEach(button => {
+      button.addEventListener('click', (event) => {
+          const productDiv = event.target.closest('.product');
+          const productId = productDiv.getAttribute('data-id');
+          window.location.href = `/update.html?productId=${productId}`;
+      });
+  });
+});

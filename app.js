@@ -138,6 +138,56 @@ app.put('/update-product/:id', async (req, res) => {
     }
 });
 
+//Add an endpoint in your Express app to fetch product details by ID.
+app.get('/api/products/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM product WHERE productid = $1', [id]);
+        if (result.rows.length > 0) {
+            const product = result.rows[0];
+            res.json({
+                productid: product.productid,
+                producttype: product.producttype,
+                productname: product.productname,
+                productquantity: product.productquantity,
+                productprice: product.productprice,
+                productimage: product.productimage.toString('base64')  // Convert bytea to base64
+            });
+        } else {
+            res.status(404).send('Product not found');
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+
+//Add an endpoint in your Express app to handle the product update.
+app.put('/api/products/:id', upload.single('productImage'), async (req, res) => {
+    const { id } = req.params;
+    const { productName, productPrice, productQuantity, productType } = req.body;
+    const productImage = req.file ? req.file.buffer : null;
+
+    try {
+        if (productImage) {
+            await pool.query(
+                'UPDATE product SET productname = $1, productprice = $2, productquantity = $3, producttype = $4, productimage = $5 WHERE productid = $6',
+                [productName, productPrice, productQuantity, productType, productImage, id]
+            );
+        } else {
+            await pool.query(
+                'UPDATE product SET productname = $1, productprice = $2, productquantity = $3, producttype = $4 WHERE productid = $5',
+                [productName, productPrice, productQuantity, productType, id]
+            );
+        }
+        res.json({ message: 'Product updated successfully!' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
 
 // Other routes and server setup...
 
