@@ -1,5 +1,3 @@
-// product.js
-
 document.getElementById('productForm').addEventListener('submit', async function(event) {
   event.preventDefault();
   const formData = new FormData(this);
@@ -52,6 +50,14 @@ async function fetchProducts() {
               `;
               productList.appendChild(productDiv);
           });
+
+          document.querySelectorAll('.update-btn').forEach(button => {
+              button.addEventListener('click', handleUpdate);
+          });
+
+          document.querySelectorAll('.delete-btn').forEach(button => {
+              button.addEventListener('click', handleDelete);
+          });
       } else {
           console.error('Failed to fetch products');
           alert('Failed to fetch products');
@@ -59,6 +65,71 @@ async function fetchProducts() {
   } catch (error) {
       console.error('Error fetching products:', error);
       alert('Error fetching products');
+  }
+}
+
+async function handleUpdate(event) {
+  const productDiv = event.target.closest('.product');
+  const id = productDiv.dataset.id;
+
+  const productName = prompt('Enter new product name:', productDiv.dataset.name);
+  const productQuantity = prompt('Enter new product quantity:', productDiv.dataset.quantity);
+  const productPrice = prompt('Enter new product price:', productDiv.dataset.price);
+  const productType = prompt('Enter new product type:', productDiv.dataset.type);
+  
+  const productImage = null; // Handle image update separately if needed
+
+  if (productName && productQuantity && productPrice && productType) {
+    const formData = new FormData();
+    formData.append('productName', productName);
+    formData.append('productQuantity', productQuantity);
+    formData.append('productPrice', productPrice);
+    formData.append('productType', productType);
+    if (productImage) {
+      formData.append('productImage', productImage);
+    }
+
+    try {
+        const response = await fetch(`/api/products/${id}`, {
+            method: 'PUT',
+            body: formData
+        });
+
+        if (response.ok) {
+            alert('Product updated successfully!');
+            fetchProducts();
+        } else {
+            console.error('Failed to update product');
+            alert('Failed to update product');
+        }
+    } catch (error) {
+        console.error('Error updating product:', error);
+        alert('Error updating product');
+    }
+  }
+}
+
+async function handleDelete(event) {
+  const productDiv = event.target.closest('.product');
+  const id = productDiv.dataset.id;
+
+  if (confirm('Are you sure you want to delete this product?')) {
+    try {
+        const response = await fetch(`/api/products/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert('Product deleted successfully!');
+            fetchProducts();
+        } else {
+            console.error('Failed to delete product');
+            alert('Failed to delete product');
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Error deleting product');
+    }
   }
 }
 
