@@ -4,9 +4,13 @@ const cors = require('cors');
 const multer = require('multer');
 const db = require('./db');
 const dotenv = require('dotenv');
+const { Pool } = require('pg');
+
 
 dotenv.config();
 const app = express();
+const port = process.env.PORT || 3000; // Define port here
+//const port = 3000;
 
 // Middleware to parse JSON bodies and form data
 app.use(express.json());
