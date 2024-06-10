@@ -31,7 +31,7 @@ app.get('/time', async (req, res) => {
 });
 
 // Route to create a new product
-app.post('/add-products', upload.single('productImage'), async (req, res) => {
+app.post('/add-product', upload.single('productImage'), async (req, res) => {
   const { productType, productName, productQuantity, productPrice } = req.body;
   const productImage = req.file ? req.file.buffer : null;
 
