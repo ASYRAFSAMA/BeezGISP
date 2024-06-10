@@ -96,26 +96,22 @@ const storage = multer.diskStorage({
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Endpoint to add a new product
+// Route to add a new product
 app.post('/add-product', upload.single('productImage'), async (req, res) => {
-  const { productType, productName, productQuantity, productPrice } = req.body;
-  const productImage = req.file ? req.file.filename : null;
-
-  if (!productType || !productName || !productQuantity || !productPrice || !productImage) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
-
-  try {
-    const result = await pool.query(
-      'INSERT INTO products (type, name, quantity, price, image) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [productType, productName, productQuantity, productPrice, productImage]
-    );
-    res.status(201).json({ message: 'Product added successfully', product: result.rows[0] });
-  } catch (error) {
-    console.error('Error adding product:', error);
-    res.status(500).json({ message: 'Failed to add product' });
-  }
-});
+    const { productType, productName, productQuantity, productPrice } = req.body;
+    const productImage = req.file ? req.file.buffer : null;
+  
+    try {
+      const result = await pool.query(
+        'INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [productType, productName, productQuantity, productPrice, productImage]
+      );
+      res.status(201).json({ message: 'Product added successfully', product: result.rows[0] });
+    } catch (error) {
+      console.error('Error adding product:', error);
+      res.status(500).json({ message: 'Failed to add product' });
+    }
+  });
   
  // Endpoint to get all products
 app.get('/products', async (req, res) => {
