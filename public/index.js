@@ -15,7 +15,7 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
     formData.append('productImage', productImage);
   
     try {
-      const response = await fetch('/products', {
+      const response = await fetch('/add-product', {
         method: 'POST',
         body: formData
       });
@@ -30,5 +30,4 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
     } catch (err) {
       console.error('Error:', err);
     }
-  });
-  
+});
