@@ -90,3 +90,51 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.update-btn').forEach(button => {
+      button.addEventListener('click', (event) => {
+          const product = event.target.closest('.product');
+          const productId = product.dataset.id;
+          const productName = product.dataset.name;
+          const productQuantity = product.dataset.quantity;
+          const productPrice = product.dataset.price;
+
+          document.getElementById('updateProductId').value = productId;
+          document.getElementById('updateProductName').value = productName;
+          document.getElementById('updateProductQuantity').value = productQuantity;
+          document.getElementById('updateProductPrice').value = productPrice;
+
+          document.getElementById('updateFormContainer').style.display = 'block';
+      });
+  });
+
+  document.getElementById('updateProductForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const productId = document.getElementById('updateProductId').value;
+      const formData = new FormData(this);
+
+      try {
+          const response = await fetch(`/update-product/${productId}`, {
+              method: 'PUT',
+              body: formData,
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          });
+
+          if (response.ok) {
+              alert('Product updated successfully!');
+              document.getElementById('updateFormContainer').style.display = 'none';
+              location.reload(); // reload the page to show updated product
+          } else {
+              alert('Failed to update product.');
+          }
+      } catch (error) {
+          console.error('Error updating product:', error);
+          alert('Error updating product.');
+      }
+  });
+});
+

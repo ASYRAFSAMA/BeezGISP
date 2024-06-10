@@ -120,6 +120,23 @@ app.delete('/delete-product/:id', async (req, res) => {
     }
 });
 
+// Define route to delete products
+app.put('/update-product/:id', async (req, res) => {
+    const productId = req.params.id;
+    const { productName, productQuantity, productPrice } = req.body;
+
+    try {
+        await db.query(
+            'UPDATE product SET productname = $1, productquantity = $2, productprice = $3 WHERE productid = $4',
+            [productName, productQuantity, productPrice, productId]
+        );
+        res.status(200).send('Product updated successfully');
+    } catch (err) {
+        console.error('Error updating product:', err);
+        res.status(500).send('Error updating product');
+    }
+});
+
 // Other routes and server setup...
 
 const PORT = process.env.PORT || 4000;

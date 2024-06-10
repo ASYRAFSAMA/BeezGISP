@@ -45,6 +45,19 @@
         </div>
     </div>
 
+
+    <div id="updateFormContainer" style="display:none;">
+        <h2>Update Product</h2>
+        <form id="updateProductForm">
+            <input type="hidden" id="updateProductId">
+            <input type="text" id="updateProductName" name="productName" placeholder="Enter product name" required>
+            <input type="number" id="updateProductQuantity" name="productQuantity" placeholder="Enter product quantity" required>
+            <input type="number" id="updateProductPrice" name="productPrice" placeholder="Enter product price" required>
+            <button type="submit">Update Product</button>
+        </form>
+    </div>
+    
+
     <script src="product.js"></script>
 </body>
 </html>
