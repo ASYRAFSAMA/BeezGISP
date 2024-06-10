@@ -7,53 +7,64 @@
     <link rel="stylesheet" href="update.css">
 </head>
 <body>
-    <header>
-        <h2 class="logo">MBG</h2>
-        <nav class="navigation">
-            <a href="index.html">Home</a>
-            <a href="#">About</a>
-            <a href="product.html">Product</a>
-            <a href="#">Staff</a>
-            <button class="btnLogin-popup">Login</button>
-        </nav>        
-    </header>
-    <div class="container">
-        <h1>Update Product</h1>
-        <form id="updateProductForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="productId">Product ID</label>
-                <input type="text" id="productId" name="productId" readonly>
-            </div>
-            <div class="form-group">
-                <label for="productName">Product Name</label>
-                <input type="text" id="productName" name="productName" required>
-            </div>
-            <div class="form-group">
-                <label for="productPrice">Product Price</label>
-                <input type="number" id="productPrice" name="productPrice" required>
-            </div>
-            <div class="form-group">
-                <label for="productQuantity">Product Quantity</label>
-                <input type="number" id="productQuantity" name="productQuantity" required>
-            </div>
-            <div class="form-group">
-                <label for="productType">Product Type</label>
-                <select id="productType" name="productType" required>
-                    <option value="honey">Honey</option>
-                    <option value="soap">Soap</option>
-                    <option value="souvenir">Souvenir</option>
-                </select>
-            <div class="form-group">
-                <img id="productImagePreview" src="" alt="Product Image" style="max-width: 100%;">
-            </div>
-            <div class="form-group">
-                <label for="productImage">Product Image</label>
-                <input type="file" id="productImage" name="productImage" accept="image/*">
-            </div>
+    <div id="updateFormContainer">
+        <h2>Update Product</h2>
+        <form id="updateProductForm">
+            <input type="hidden" id="updateProductId">
+            <input type="text" id="updateProductName" name="productName" placeholder="Enter product name" required>
+            <input type="number" id="updateProductQuantity" name="productQuantity" placeholder="Enter product quantity" required>
+            <input type="number" id="updateProductPrice" name="productPrice" placeholder="Enter product price" required>
             <button type="submit">Update Product</button>
         </form>
-        <div id="message"></div>
     </div>
-    <script src="update.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const productId = urlParams.get('productId');
+
+          if (productId) {
+              try {
+                  const response = await fetch(`/product/${productId}`);
+                  const product = await response.json();
+
+                  document.getElementById('updateProductId').value = product.productid;
+                  document.getElementById('updateProductName').value = product.productname;
+                  document.getElementById('updateProductQuantity').value = product.productquantity;
+                  document.getElementById('updateProductPrice').value = product.productprice;
+              } catch (error) {
+                  console.error('Error fetching product:', error);
+              }
+          }
+
+          document.getElementById('updateProductForm').addEventListener('submit', async function(event) {
+              event.preventDefault();
+              const productId = document.getElementById('updateProductId').value;
+              const productName = document.getElementById('updateProductName').value;
+              const productQuantity = document.getElementById('updateProductQuantity').value;
+              const productPrice = document.getElementById('updateProductPrice').value;
+
+              try {
+                  const response = await fetch(`/update-product/${productId}`, {
+                      method: 'PUT',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ productName, productQuantity, productPrice })
+                  });
+
+                  if (response.ok) {
+                      alert('Product updated successfully!');
+                      window.location.href = 'product.html';
+                  } else {
+                      alert('Failed to update product.');
+                  }
+              } catch (error) {
+                  console.error('Error updating product:', error);
+                  alert('Error updating product.');
+              }
+          });
+      });
+    </script>
 </body>
 </html>
