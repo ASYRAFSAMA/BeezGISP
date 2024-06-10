@@ -1,74 +1,3 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Products</title>
-    <link rel="stylesheet" href="product.css">
-</head>
-<body>
-    <header>
-        <h2 class="logo">MBG</h2>
-        <nav class="navigation">
-            <a href="index.html">Home</a>
-            <a href="#">About</a>
-            <a href="product.html">Product</a>
-            <a href="#">Staff</a>
-            <button class="btnLogin-popup">Login</button>
-        </nav>
-    </header>
-
-    <div class="container">
-        <h1>PRODUCTS</h1>
-        <div class="add-product-form">
-            <h2>CREATE PRODUCT</h2>
-            <form id="productForm" action="/add-product" method="POST" enctype="multipart/form-data">
-                <div class="input-container">
-                    <label for="productType">Product Type:</label>
-                    <select id="productType" name="productType">
-                        <option value="honey">Honey</option>
-                        <option value="soap">Soap</option>
-                        <option value="souvenir">Souvenir</option>
-                    </select>
-                </div>
-                <input type="text" id="productName" name="productName" placeholder="Enter product name" required>
-                <input type="number" id="productQuantity" name="productQuantity" placeholder="Enter product quantity" required>
-                <input type="number" id="productPrice" name="productPrice" placeholder="Enter product price" required>
-                <input type="file" id="productImage" name="productImage" required>
-                <button type="submit">Create Product</button>
-            </form>
-        </div>
-
-        <div class="product-list">
-            <h2>Existing Products</h2>
-            <div class="products" id="productList"></div>
-        </div>
-    </div>
-
-    <div id="updateFormContainer" style="display:none;">
-        <h2>Update Product</h2>
-        <form id="updateProductForm" enctype="multipart/form-data">
-            <input type="hidden" id="updateProductId" name="productId">
-            <input type="text" id="updateProductName" name="productName" placeholder="Enter product name" required>
-            <input type="number" id="updateProductQuantity" name="productQuantity" placeholder="Enter product quantity" required>
-            <input type="number" id="updateProductPrice" name="productPrice" placeholder="Enter product price" required>
-            <select id="updateProductType" name="productType" required>
-                <option value="honey">Honey</option>
-                <option value="soap">Soap</option>
-                <option value="souvenir">Souvenir</option>
-            </select>
-            <div class="form-group">
-                <img id="productImagePreview" src="" alt="Product Image" style="max-width: 100%;">
-            </div>
-            <input type="file" id="updateProductImage" name="productImage" accept="image/*">
-            <button type="submit">Update Product</button>
-        </form>
-    </div>
-
-    <script src="product.js"></script>
-</body>
-</html>a-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,4 +48,3 @@
     <script src="product.js"></script>
 </body>
 </html>
-

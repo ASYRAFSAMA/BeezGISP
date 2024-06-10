@@ -81,7 +81,7 @@ app.post('/login', async (req, res) => {
 
 
 // Add product route
-app.post('/add-product', upload.single('productImage'), async (req, res) => {
+/*app.post('/add-product', upload.single('productImage'), async (req, res) => {
     const { productType, productName, productQuantity, productPrice } = req.body;
     const productImage = req.file ? req.file.buffer : null;
   
@@ -184,4 +184,42 @@ app.get('/products', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
+});*/
+
+// app.js
+
+
+// Define route to add a new product
+app.post('/add-product', async (req, res) => {
+    try {
+        const { productType, productName, productQuantity, productPrice } = req.body;
+        const productImage = req.file.buffer;
+
+        // Insert the product data into the database
+        const result = await db.query('INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *', [productType, productName, productQuantity, productPrice, productImage]);
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error('Error adding product:', err);
+        res.status(500).send('Error adding product');
+    }
+});
+
+// Define route to get all products
+app.get('/products', async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM product');
+        const products = result.rows.map(product => ({
+            ...product,
+            productimage: product.productimage ? product.productimage.toString('base64') : null
+        }));
+        res.json(products);
+    } catch (err) {
+        console.error('Error fetching products:', err);
+        res.status(500).send('Error fetching products');
+    }
+});
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
