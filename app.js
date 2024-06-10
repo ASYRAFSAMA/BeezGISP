@@ -79,23 +79,7 @@ app.post('/login', async (req, res) => {
 
 //product________________________________
 
-// Define route to add a new product
-/*app.post('/add-product', upload.single('productImage'), async (req, res) => {
-    try {
-        const { productType, productName, productQuantity, productPrice } = req.body;
-        const productImage = req.file.buffer;
 
-        // Insert the product data into the database
-        const result = await db.query(
-            'INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [productType, productName, productQuantity, productPrice, productImage]
-        );
-        res.json(result.rows[0]);
-    } catch (err) {
-        console.error('Error adding product:', err);
-        res.status(500).send('Error adding product');
-    }
-});*/
 // Add product route
 app.post('/add-product', upload.single('productImage'), async (req, res) => {
     const { productType, productName, productQuantity, productPrice } = req.body;
@@ -113,20 +97,7 @@ app.post('/add-product', upload.single('productImage'), async (req, res) => {
     }
   });
 
-// Define route to get all products
-/*app.get('/products', async (req, res) => {
-    try {
-        const result = await db.query('SELECT * FROM product');
-        const products = result.rows.map(product => ({
-            ...product,
-            productimage: product.productimage ? product.productimage.toString('base64') : null
-        }));
-        res.json(products);
-    } catch (err) {
-        console.error('Error fetching products:', err);
-        res.status(500).send('Error fetching products');
-    }
-});*/
+
 // Get product by id route
 app.get('/product/:id', async (req, res) => {
     const { id } = req.params;
@@ -145,6 +116,17 @@ app.get('/product/:id', async (req, res) => {
 });
 
 // Define route to delete products
+app.delete('/delete-product/:id', async (req, res) => {
+    const productId = req.params.id;
+
+    try {
+        await db.query('DELETE FROM product WHERE productid = $1', [productId]);
+        res.status(200).send('Product deleted successfully');
+    } catch (err) {
+        console.error('Error deleting product:', err);
+        res.status(500).send('Error deleting product');
+    }
+});
 
 
 // Define route to update products
@@ -176,25 +158,7 @@ app.get('/api/products/:id', async (req, res) => {
 
 
 //Add an endpoint in your Express app to handle the product update.
-app.put('/api/products/:id', upload.single('productImage'), async (req, res) => {
-    const { id } = req.params;
-    const { productName, productQuantity, productPrice, productType } = req.body;
-    let productImage = null;
-    if (req.file) {
-        productImage = fs.readFileSync(req.file.path);
-    }
-    try {
-        const query = `
-            UPDATE product SET productname = $1, productquantity = $2, productprice = $3, producttype = $4, productimage = $5
-            WHERE productid = $6
-        `;
-        await db.query(query, [productName, productQuantity, productPrice, productType, productImage, id]);
-        res.send('Product updated successfully');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server error');
-    }
-});
+
 
 //Fetch All Products
 app.get('/products', async (req, res) => {

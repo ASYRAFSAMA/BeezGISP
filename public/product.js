@@ -62,7 +62,7 @@ async function fetchProducts() {
 
 document.addEventListener('DOMContentLoaded', fetchProducts);
 
-document.addEventListener('DOMContentLoaded', () => {
+/*document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('updateProductForm').addEventListener('submit', async function (event) {
       event.preventDefault();
       const productId = document.getElementById('updateProductId').value;
@@ -91,7 +91,107 @@ document.addEventListener('DOMContentLoaded', () => {
           alert('Error updating product.');
       }
   });
+});*/
+
+//baru
+document.addEventListener('DOMContentLoaded', () => {
+  loadProducts();
+
+  document.getElementById('updateProductForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const productId = document.getElementById('updateProductId').value;
+      const productName = document.getElementById('updateProductName').value;
+      const productQuantity = document.getElementById('updateProductQuantity').value;
+      const productPrice = document.getElementById('updateProductPrice').value;
+
+      try {
+          const response = await fetch(`/update-product/${productId}`, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ productName, productQuantity, productPrice })
+          });
+
+          if (response.ok) {
+              alert('Product updated successfully!');
+              document.getElementById('updateFormContainer').style.display = 'none';
+              loadProducts(); // reload the products to show the updated data
+          } else {
+              alert('Failed to update product.');
+          }
+      } catch (error) {
+          console.error('Error updating product:', error);
+          alert('Error updating product.');
+      }
+  });
 });
+
+async function loadProducts() {
+  try {
+      const response = await fetch('/products');
+      const products = await response.json();
+
+      const productList = document.getElementById('productList');
+      productList.innerHTML = '';
+
+      products.forEach(product => {
+          const productElement = document.createElement('div');
+          productElement.className = 'product';
+          productElement.dataset.id = product.productid;
+          productElement.dataset.name = product.productname;
+          productElement.dataset.price = product.productprice;
+          productElement.dataset.quantity = product.productquantity;
+          productElement.dataset.type = product.producttype;
+
+          productElement.innerHTML = `
+              <img src="data:image/jpeg;base64,${product.productimage}" alt="${product.productname}">
+              <h3>${product.productname}</h3>
+              <p class="pid">Product ID: ${product.productid}</p>
+              <p class="price">RM ${product.productprice}</p>
+              <p class="quantity">Quantity available: ${product.productquantity}</p>
+              <p class="product-type">Product Type: ${product.producttype}</p>
+              <button class="update-btn" onclick="showUpdateForm(${product.productid}, '${product.productname}', ${product.productquantity}, ${product.productprice})">Update</button>
+              <button class="delete-btn" onclick="deleteProduct(${product.productid})">Delete</button>
+          `;
+          productList.appendChild(productElement);
+      });
+  } catch (error) {
+      console.error('Error loading products:', error);
+  }
+}
+
+function showUpdateForm(id, name, quantity, price) {
+  document.getElementById('updateProductId').value = id;
+  document.getElementById('updateProductName').value = name;
+  document.getElementById('updateProductQuantity').value = quantity;
+  document.getElementById('updateProductPrice').value = price;
+  document.getElementById('updateFormContainer').style.display = 'block';
+}
+
+async function deleteProduct(productId) {
+  try {
+      const response = await fetch(`/delete-product/${productId}`, {
+          method: 'DELETE'
+      });
+
+      if (response.ok) {
+          alert('Product deleted successfully!');
+          loadProducts(); // reload the products to show the updated data
+      } else {
+          alert('Failed to delete product.');
+      }
+  } catch (error) {
+      console.error('Error deleting product:', error);
+      alert('Error deleting product.');
+  }
+}
+
+
+
+
+
+
 
 async function loadProducts() {
   try {
@@ -159,7 +259,23 @@ async function loadProducts() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.update-btn').forEach(button => {
       button.addEventListener('click', (event) => {
           const productDiv = event.target.closest('.product');
@@ -167,4 +283,4 @@ document.addEventListener('DOMContentLoaded', () => {
           window.location.href = `/update.html?productId=${productId}`;
       });
   });
-});
+});*/
