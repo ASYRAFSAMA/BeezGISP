@@ -3,6 +3,8 @@ const path = require('path');
 const cors = require('cors');
 const db = require('./db');
 const app = express();
+const multer = require('multer');
+const db = require('./db');
 
 // Middleware to parse JSON bodies and form data
 app.use(express.json());
@@ -61,6 +63,29 @@ app.post('/login', async (req, res) => {
     res.status(500).send('Something went wrong!');
   }
 });
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Define route to add a new product
+app.post('/add-product', upload.single('productImage'), async (req, res) => {
+    try {
+        const { productType, productName, productQuantity, productPrice } = req.body;
+        const productImage = req.file.buffer;
+
+        // Insert the product data into the database
+        const result = await db.query(
+            'INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [productType, productName, productQuantity, productPrice, productImage]
+        );
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error('Error adding product:', err);
+        res.status(500).send('Error adding product');
+    }
+});
+
 
 const PORT = process.env.PORT || 4000;
 
