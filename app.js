@@ -74,21 +74,25 @@ const upload = multer({ storage: storage });
 // Define route to add a new product
 app.post('/add-product', upload.single('productImage'), async (req, res) => {
   try {
-      const { productType, productName, productQuantity, productPrice } = req.body;
-      const productImage = req.file.buffer;
+    const { productType, productName, productQuantity, productPrice } = req.body;
+    const productImage = req.file.buffer;
 
-      console.log('Received data:', { productType, productName, productQuantity, productPrice });
-      console.log('Received image:', req.file);
+    // Insert the product data into the database
+    const query = `
+      INSERT INTO product (producttype, productname, productquantity, productprice, productimage)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `;
+    const values = [productType, productName, productQuantity, productPrice, productImage];
 
-      // Insert the product data into the database
-      const result = await db.query(
-          'INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-          [productType, productName, productQuantity, productPrice, productImage]
-      );
-      res.json(result.rows[0]);
+    const client = await pool.connect();
+    const result = await client.query(query, values);
+    client.release();
+
+    res.json(result.rows[0]);
   } catch (err) {
-      console.error('Error adding product:', err);
-      res.status(500).send('Error adding product');
+    console.error('Error adding product:', err);
+    res.status(500).send('Error adding product');
   }
 });
 
