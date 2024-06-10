@@ -19,9 +19,7 @@ app.use(cors());
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configure multer for file uploads
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+
 
 // Define a route to test the database connection
 app.get('/time', async (req, res) => {
@@ -71,69 +69,64 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Define route to add a new product
+// app.js
+
+
+// Middleware setup
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Multer setup for handling file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Endpoint to add a new product
 app.post('/add-product', upload.single('productImage'), async (req, res) => {
-    try {
-        const { productType, productName, productQuantity, productPrice } = req.body;
-        const productImage = req.file ? req.file.buffer : null;
+  const { productType, productName, productQuantity, productPrice } = req.body;
+  const productImage = req.file ? req.file.filename : null;
 
-        // Insert the product data into the database
-        const result = await db.query('INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *', [productType, productName, productQuantity, productPrice, productImage]);
-        res.json(result.rows[0]);
-    } catch (err) {
-        console.error('Error adding product:', err);
-        res.status(500).send('Error adding product');
-    }
+  if (!productType || !productName || !productQuantity || !productPrice || !productImage) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO products (type, name, quantity, price, image) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [productType, productName, productQuantity, productPrice, productImage]
+    );
+    res.status(201).json({ message: 'Product added successfully', product: result.rows[0] });
+  } catch (error) {
+    console.error('Error adding product:', error);
+    res.status(500).json({ message: 'Failed to add product' });
+  }
 });
 
-// Define route to get all products
+// Endpoint to get all products
 app.get('/products', async (req, res) => {
-    try {
-        const result = await db.query('SELECT * FROM product');
-        const products = result.rows.map(product => ({
-            ...product,
-            productimage: product.productimage ? product.productimage.toString('base64') : null
-        }));
-        res.json(products);
-    } catch (err) {
-        console.error('Error fetching products:', err);
-        res.status(500).send('Error fetching products');
-    }
-});
-
-// Define route to update a product
-app.put('/api/products/:id', upload.single('productImage'), async (req, res) => {
-  const { id } = req.params;
-  const { productName, productQuantity, productPrice, productType } = req.body;
-  let productImage = null;
-  if (req.file) {
-      productImage = req.file.buffer;
-  }
   try {
-      const query = `
-          UPDATE product SET productname = $1, productquantity = $2, productprice = $3, producttype = $4, productimage = $5
-          WHERE productid = $6
-      `;
-      await db.query(query, [productName, productQuantity, productPrice, productType, productImage, id]);
-      res.send('Product updated successfully');
-  } catch (err) {
-      console.error('Error updating product:', err);
-      res.status(500).send('Error updating product');
+    const result = await pool.query('SELECT * FROM products');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Failed to fetch products' });
   }
 });
 
-// Define route to delete a product
-app.delete('/api/products/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-      const query = 'DELETE FROM product WHERE productid = $1';
-      await db.query(query, [id]);
-      res.send('Product deleted successfully');
-  } catch (err) {
-      console.error('Error deleting product:', err);
-      res.status(500).send('Error deleting product');
-  }
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
+
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
