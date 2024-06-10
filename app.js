@@ -4,7 +4,12 @@ const cors = require('cors');
 const db = require('./db');
 const app = express();
 const multer = require('multer');
-const db = require('./db');
+
+
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 
 // Middleware to parse JSON bodies and form data
 app.use(express.json());
@@ -70,25 +75,25 @@ const upload = multer({ storage: storage });
 
 // Define route to add a new product
 app.post('/add-product', upload.single('productImage'), async (req, res) => {
-    try {
-        const { productType, productName, productQuantity, productPrice } = req.body;
-        const productImage = req.file.buffer;
+  try {
+      const { productType, productName, productQuantity, productPrice } = req.body;
+      const productImage = req.file.buffer;
 
-        // Insert the product data into the database
-        const result = await db.query(
-            'INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [productType, productName, productQuantity, productPrice, productImage]
-        );
-        res.json(result.rows[0]);
-    } catch (err) {
-        console.error('Error adding product:', err);
-        res.status(500).send('Error adding product');
-    }
+      // Insert the product data into the database
+      const result = await db.query(
+          'INSERT INTO product (producttype, productname, productquantity, productprice, productimage) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+          [productType, productName, productQuantity, productPrice, productImage]
+      );
+      res.json(result.rows[0]);
+  } catch (err) {
+      console.error('Error adding product:', err);
+      res.status(500).send('Error adding product');
+  }
 });
 
+// Other routes and server setup...
 
 const PORT = process.env.PORT || 4000;
-
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
