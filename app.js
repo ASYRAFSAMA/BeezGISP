@@ -145,61 +145,10 @@ app.get('/product/:id', async (req, res) => {
 });
 
 // Define route to delete products
-/*app.delete('/delete-product/:id', async (req, res) => {
-    const productId = req.params.id;
 
-    try {
-        await db.query('DELETE FROM product WHERE productid = $1', [productId]);
-        res.status(200).send('Product deleted successfully');
-    } catch (err) {
-        console.error('Error deleting product:', err);
-        res.status(500).send('Error deleting product');
-    }
-});*/
-// Delete product route
-app.delete('/delete-product/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        await db.query('DELETE FROM product WHERE productid = $1', [id]);
-        res.json({ message: 'Product deleted successfully' });
-    } catch (err) {
-        console.error('Error deleting product:', err);
-        res.status(500).send('Error deleting product');
-    }
-});
 
 // Define route to update products
-/*app.put('/update-product/:id', async (req, res) => {
-    const productId = req.params.id;
-    const { productName, productQuantity, productPrice } = req.body;
 
-    try {
-        await db.query(
-            'UPDATE product SET productname = $1, productquantity = $2, productprice = $3 WHERE productid = $4',
-            [productName, productQuantity, productPrice, productId]
-        );
-        res.status(200).send('Product updated successfully');
-    } catch (err) {
-        console.error('Error updating product:', err);
-        res.status(500).send('Error updating product');
-    }
-});*/
-// Update product route
-app.put('/update-product/:id', async (req, res) => {
-    const { id } = req.params;
-    const { productName, productQuantity, productPrice } = req.body;
-
-    try {
-        await db.query(
-            'UPDATE product SET productname = $1, productquantity = $2, productprice = $3 WHERE productid = $4',
-            [productName, productQuantity, productPrice, id]
-        );
-        res.json({ message: 'Product updated successfully' });
-    } catch (err) {
-        console.error('Error updating product:', err);
-        res.status(500).send('Error updating product');
-    }
-});
 
 //Add an endpoint in your Express app to fetch product details by ID.
 app.get('/api/products/:id', async (req, res) => {
@@ -227,7 +176,7 @@ app.get('/api/products/:id', async (req, res) => {
 
 
 //Add an endpoint in your Express app to handle the product update.
-/*app.put('/api/products/:id', upload.single('productImage'), async (req, res) => {
+app.put('/api/products/:id', upload.single('productImage'), async (req, res) => {
     const { id } = req.params;
     const { productName, productQuantity, productPrice, productType } = req.body;
     let productImage = null;
@@ -245,7 +194,7 @@ app.get('/api/products/:id', async (req, res) => {
         console.error(err);
         res.status(500).send('Server error');
     }
-});*/
+});
 
 //Fetch All Products
 app.get('/products', async (req, res) => {
