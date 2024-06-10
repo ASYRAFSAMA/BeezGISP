@@ -1,4 +1,4 @@
-/*@import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url('https://fonts.googleapis.com/css?family=Poppins');
 
 * {
     margin: 0;
@@ -248,4 +248,5 @@ select {
 .product .delete-btn:hover {
     background-color: #cc5135;
 }
+
 
