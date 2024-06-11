@@ -15,10 +15,11 @@ body {
     background: url('lebah3.jpg') no-repeat;
     background-size: cover;
     background-position: center;
+
 }
 
 header {
-    position: fixed;
+    position: fixed ;
     top: 0;
     left: 0;
     width: 100%;
@@ -27,6 +28,7 @@ header {
     justify-content: space-between;
     align-items: center;
     z-index: 99;
+
 }
 
 .logo {
@@ -59,9 +61,10 @@ header {
 }
 
 .navigation a:hover::after {
-    transform-origin: left;
+    transform-origin:left ;
     transform: scaleX(1);
 }
+
 
 .navigation .btnLogin-popup {
     width: 130px;
@@ -95,8 +98,9 @@ header {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    transform: scale(0);
+    transform: scale(0) ;
     transition: transform .5s ease, height .2s ease;
+    z-index: 100;
 }
 
 .wrapper.active-popup {
@@ -104,61 +108,60 @@ header {
 }
 
 .wrapper.active {
-    
-    height: 700px; /* Increased height for the registration form */
-    overflow-y: auto; /* Ensure scrolling for the active state */
+    height: 520px;
+
 }
 
 .wrapper .form-box {
     width: 100%;
-    padding: 40px;
-    transition: transform .5s;
+    padding: 40px ;
 }
 
-.wrapper .login {
+
+
+.wrapper .form-box.login {
+    transition: transform .25s ease;
     transform: translateX(0);
 }
 
-.wrapper .register {
-    position: absolute;
-    top: 40px;
-    transform: translateX(400px);
-}
-
-.wrapper.active .login {
+.wrapper.active .form-box.login{
+    transition: none;
     transform: translateX(-400px);
 }
 
-.wrapper.active .register {
-    transform: translateX(0);
+.wrapper .form-box.register {
+    position: absolute;
+    transition: none;
+    transform: translateX(400px);
 }
 
+.wrapper.active .form-box.register {
+    transition: transform .25s ease;
+    transform: translateX(0);
+}
 .wrapper .icon-close {
     position: absolute;
     top: 0;
     right: 0;
-    width: 40px;
-    height: 40px;
-    background: rgb(0, 0, 0);
-    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    background: rgba(216, 149, 4);
+    font-size: 2em;
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom-left-radius: 20px;
+    cursor: pointer;
     z-index: 1;
+
+
 }
 
-.wrapper .icon-close ion-icon {
-    color: white;
-    font-size: 1.5em;
-}
 
-.wrapper .icon-close:hover {
-    background: #a2a2a2;
-}
-
-h2 {
+.form-box h2 {
     font-size: 2em;
-    color: rgb(0, 0, 0);
+    color: white;
     text-align: center;
 }
 
@@ -166,8 +169,8 @@ h2 {
     position: relative;
     width: 100%;
     height: 50px;
-    border-bottom: 2px solid rgb(0, 0, 0);
-    margin: 30px 0;
+    border-bottom: 2px solid #ffffff;
+    margin: 30px 0 ;
 }
 
 .input-box label {
@@ -176,13 +179,15 @@ h2 {
     left: 5px;
     transform: translateY(-50%);
     font-size: 1em;
-    color: rgb(0, 0, 0);
+    color: #ffffff;
     font-weight: 500;
     pointer-events: none;
     transition: .5s;
+
 }
 
-.input-box input:focus ~ label, .input-box input:valid ~ label {
+.input-box input:focus~label,
+.input-box input:valid~label {
     top: -5px;
 }
 
@@ -193,35 +198,36 @@ h2 {
     border: none;
     outline: none;
     font-size: 1em;
+    color: #020202;
     font-weight: 600;
     padding: 0 35px 0 5px;
-    color: rgb(0, 0, 0);
 }
 
 .input-box .icon {
     position: absolute;
     right: 8px;
     font-size: 1.2em;
-    color: rgb(0, 0, 0);
+    color: #000000;
     line-height: 57px;
 }
 
 .remember-forgot {
     font-size: .9em;
-    color: rgb(0, 0, 0);
+    color: #ffffff;
     font-weight: 500;
     margin: -15px 0 15px;
     display: flex;
     justify-content: space-between;
+
 }
 
 .remember-forgot label input {
-    accent-color: rgb(0, 0, 0);
+    accent-color: #000000;
     margin-right: 3px;
 }
 
 .remember-forgot a {
-    color: rgb(0, 0, 0);
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -232,32 +238,26 @@ h2 {
 .btn {
     width: 100%;
     height: 45px;
-    background: rgb(0, 0, 0);
+    background: rgba(216, 149, 4);
     border: none;
     outline: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 1em;
-    color: rgb(255, 255, 255);
+    color: white;
     font-weight: 500;
-    text-transform: uppercase;
-    transition: .5s;
-}
-
-.btn:hover {
-    background: rgb(0, 0, 0);
 }
 
 .login-register {
     font-size: .9em;
-    color: rgb(0, 0, 0);
+    color: #ffffff;
     text-align: center;
     font-weight: 500;
     margin: 25px 0 10px;
 }
 
 .login-register p a {
-    color: rgb(0, 0, 0);
+    color: #ffffff;
     text-decoration: none;
     font-weight: 600;
 }
@@ -266,22 +266,85 @@ h2 {
     text-decoration: underline;
 }
 
-.image-container1 {
-    position: absolute;
-    top: 70%;
-    left: 95%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    transition: transform 0.3s ease;
+.hero-section {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 95vh;
+    padding: 0 15px;
+    max-width: auto;
+    margin: 0;
 }
 
-.image-container1:hover .image {
-    transform: scale(1.1);
+.hero-section .hero {
+    margin-right: 200px;
+    width: 490px;
+    height: 380px;
+    backdrop-filter: blur (100px);
+    background-color: transparent;
+    border: none;
+    border-radius: 20px;
+    backdrop-filter: blur(115px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+
+}
+
+.hero-section .hero hr {
+    border: none; /* Remove default border */
+    height: 2px; /* Set the height of the line */
+    background-color: #333; /* Set the color of the line */
+    margin: 2px auto; /* Set margin to center the line horizontally */
+    width: 80%; /* Set the width of the line */
+}
+
+
+.hero h2 {
+    padding: 9px;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: rgb(255, 196, 0);
+}
+
+.hero p {
+    font-style: italic;
+    padding: 9px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.hero-section .buttons {
+    padding: 19px;
+    margin-top: 20px;
+}
+
+.hero-section .buttons a {
+    text-decoration: none;
+    color: #000000;
+    padding: 12px 24px;
+    border-radius: 0.375rem;
+    font-weight: 600;
+}
+
+.buttons .learn {
+    background-color: rgb(255, 208, 0);
+}
+
+
+
+
+.image-container {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
 }
 
 .image {
-    max-width: 50%;
-    max-height: 100%;
-    border-radius: 0.5%;
-    transition: transform 0.3s ease;
+    float: right;
+    margin-left: 90px;
+    width: 480px; 
+    height: auto;
+    border-radius: 10px; 
+    box-shadow: 0 0 70px rgba(0, 0, 0, 800); 
 }
