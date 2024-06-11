@@ -71,6 +71,7 @@ app.post('/login', async (req, res) => {
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+// Define route to add a new product
 app.post('/add-product', upload.single('productImage'), async (req, res) => {
   try {
     const { productType, productName, productQuantity, productPrice } = req.body;
@@ -91,7 +92,7 @@ app.post('/add-product', upload.single('productImage'), async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Error adding product:', err);
-    res.status(500).json({ error: 'Error adding product', details: err.message });
+    res.status(500).send('Error adding product');
   }
 });
 
